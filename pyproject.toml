@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "py-xtdb"
 version = "0.1.1"
-description = ""
+description = "Small functions for interacting with XTDB via http."
 authors = ["joefromct <joefromct@fastmail.com>"]
 
 [tool.poetry.dependencies]
