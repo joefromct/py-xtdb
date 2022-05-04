@@ -7,15 +7,14 @@ authors = ["joefromct <joefromct@fastmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.27.1"
+pampy = "^0.3.0"
 cytoolz = "^0.11.2"
 edn-format = "^0.7.5"
-pampy = "^0.3.0"
-pycurl = "^7.45.1"
-faker-credit-score = "^0.3.0"
-rootpath = "^0.1.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"
+rootpath = "^0.1.1"
+faker-credit-score = "^0.3.0"
 ipython = "^8.3.0"
 Faker = "^13.6.0"
 tabulate = "^0.8.9"
