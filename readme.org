@@ -1,0 +1,17 @@
+
+
+** summary
+
+Some examples of utilizing =xtdb= via python, with (maybe) aspirations to create a http module/wrapper.
+
+** History
+
+I'm looking to make `xtdb` more accessible to a python-first team, primarily with a focus on data science and/or data ingestion and record loading.
+
+** Why
+
+Some shops prefer to process data in python, and ideally they would have a gentle pathway/introduction to xtdb.  This example has minimal clojure code, and all dependencies are driven just by =deps.edn= and =xtdb.edn=.
+
+** Faker
+I pulled in the python faker library, just in case the user/explorer is
+interested in playing with sample/fake data and injestion.

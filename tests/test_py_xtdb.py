@@ -1,26 +1,20 @@
-from edn_format.immutable_dict import ImmutableDict
 from py_xtdb import __version__
-import py_xtdb as sut
-from py_xtdb import attribute_stats, status, submit_tx
-import edn_format
+from toolz import first
+from py_xtdb.xt import attribute_stats, status, submit_tx, query, queryf
 from faker import Faker
-
-ImmutableDict = edn_format.immutable_dict.ImmutableDict
+import rootpath, os
 
 def test_version():
     assert __version__ == '0.1.0'
 
 
 def test_attribute_stats():
-    assert isinstance(attribute_stats(accept="application/json") , dict)
-    assert isinstance(attribute_stats(accept="application/edn")  , ImmutableDict)
-    assert isinstance(attribute_stats(accept="text/html")        , str)
+    assert isinstance(attribute_stats() , dict)
 
 
 def test_status():
-    assert isinstance(status(accept="application/json") , dict)
-    assert isinstance(status(accept="application/edn")  , ImmutableDict)
-    assert isinstance(status(accept="text/html")        , str)
+    assert isinstance(status() , dict)
+    assert isinstance(status(host="http://localhost:4001"), dict)
 
 
 def fake_rec():
@@ -43,3 +37,25 @@ def test_submit_tx_json():
     #     f"Seems we didn't insert records with transaction {r}"
 
     assert isinstance(r, dict)
+
+
+def test_query():
+    # TODO
+    r = query("""
+    {:query {:find [?id ?name ?address]
+         :keys [id name address]
+         :where [[?id :xt/id]
+                 [?id :name ?name]
+                 [?id :address ?address]]
+         :limit 2}}
+    """)
+    assert isinstance(r, list)
+    assert isinstance(first(r), dict)
+
+
+def test_queryf():
+    query_file = os.path.join(rootpath.detect(), ".data/query.edn")
+    r = queryf(query_file)
+
+    assert isinstance(r, list)
+    assert isinstance(first(r), dict)
