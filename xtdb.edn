@@ -1,8 +1,8 @@
 {
  :xtdb.http-server/server {:port 4001}
- :xtdb/index-store         {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".data/xtdb-dev/index-store"}}
- :xtdb/tx-log              {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".data/xtdb-dev/tx-log"}}
- :xtdb/document-store      {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".data/xtdb-dev/document-store"}}
+ ;; :xtdb/index-store         {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".data/xtdb-dev/index-store"}}
+ ;; :xtdb/tx-log              {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".data/xtdb-dev/tx-log"}}
+ ;; :xtdb/document-store      {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".data/xtdb-dev/document-store"}}
  :xtdb.lucene/lucene-store {#_ #_:indexer :xtdb.lucene.multi-field/->indexer     :db-dir ".data/xtdb-dev/lucene"}
  :xtdb.metrics.console/reporter {:report-frequency "PT10S"}
  }

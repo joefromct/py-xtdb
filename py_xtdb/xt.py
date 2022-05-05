@@ -10,6 +10,7 @@ import requests
 import toolz as tz
 import json
 from py_xtdb.utils import select_keys, slurp, DEFAULT_HOST, HEADERS
+from collections.abc import Callable
 
 
 def no_params(config):
@@ -36,16 +37,26 @@ active_queries      = lambda host=DEFAULT_HOST: no_params({'host': host, 'route'
 recent_queries      = lambda host=DEFAULT_HOST: no_params({'host': host, 'route': '/_xtdb/recent-queries'      })
 slowest_queries     = lambda host=DEFAULT_HOST: no_params({'host': host, 'route': '/_xtdb/slowest-queries'     })
 
+@tz.curry
 def submit_tx(host=None,
               transtype="put",
-              recs=None):
+              recs=None,
+              fn_pluck_valid_time:Callable=None,
+              fn_pluck_end_valid_time:Callable=None,):
     if not host:
         host = DEFAULT_HOST
     if not recs:
         return None
     url   = host + "/_xtdb/submit-tx"
 
-    make_trans = lambda rec: [transtype, rec]
+    def make_trans(rec):
+        return \
+            match([rec, fn_pluck_valid_time, fn_pluck_end_valid_time],
+                  [_  , None               , None     ], lambda rec: [transtype, rec],
+                  [_  , callable           , None     ], lambda rec, _:     [transtype, rec, fn_pluck_valid_time(rec) ],
+                  [_  , callable           , callable ], lambda rec, _, __: [transtype, rec, fn_pluck_valid_time(rec), fn_pluck_end_valid_time(rec)])
+
+    # make_trans = lambda rec: [transtype, rec]
 
     r = requests.post(url,
                       headers=tz.merge(HEADERS,
@@ -58,8 +69,9 @@ def submit_tx(host=None,
     return r.json()
 
 
-def entity(params,
-           host:str=None):
+@tz.curry
+def entity(host:str=None,
+           params:dict=None):
     if not host:
         host = DEFAULT_HOST
     # /_xtdb/entity               get
@@ -85,11 +97,14 @@ def entity(params,
     url   = host + "/_xtdb/entity"
     resp = requests.get(url,
                         headers={"content-type": "application/json",
-                                 "accept": "application/edn"},
+                                 "accept": "application/json"},
                         params=params)
     assert resp.ok, \
         f"Entity fetch response not ok; {resp.reason}"
-    return edn_format.loads(resp.content)
+    try:
+        return json.loads(resp.content)
+    except NotImplementedError:
+        return resp.content
 
 
 def query(query, host=None):
