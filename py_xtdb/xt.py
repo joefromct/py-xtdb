@@ -9,8 +9,24 @@ from pprint import pformat
 import requests
 import toolz as tz
 import json
-from py_xtdb.utils import select_keys, slurp, DEFAULT_HOST, HEADERS
 from collections.abc import Callable
+import os
+
+
+# TODO leave this open (environ?) for other headers, such as auth
+HEADERS={"accept": "application/json",
+         "content-type": "application/json"}
+
+DEFAULT_HOST = tz.get('XTDB_HTTP_HOST',
+                      os.environ,
+                      "http://localhost:3001")
+
+def slurp(f):
+    if f.startswith("http"):
+        return requests.get(f).content
+    with open(f, mode="r") as fh:
+        r = fh.read()
+    return r
 
 
 def no_params(config):
@@ -18,7 +34,7 @@ def no_params(config):
     decoder = tz.get('decoder' , config , "application/json" )
     host    = tz.get('host'    , config , DEFAULT_HOST       )
     route   = tz.get('route'   , config)
-    url = host + route
+    url = f"{host}{route}"
     r = requests.request(method, url, headers=tz.merge(HEADERS,
                                                        {"Accept": decoder}))
     assert r.ok, \
@@ -47,7 +63,7 @@ def submit_tx(host=None,
         host = DEFAULT_HOST
     if not recs:
         return None
-    url   = host + "/_xtdb/submit-tx"
+    url   = f"{host}/_xtdb/submit-tx"
 
     def make_trans(rec):
         return \
@@ -94,7 +110,8 @@ def entity(host:str=None,
     #  {'in': 'query' , 'name': 'tx-id'            , 'description': ''                         , 'type': 'integer' , 'required': False},
     #  {'in': 'query' , 'name': 'end-valid-time'   , 'description': ''                         , 'type': 'string'  , 'required': False}]
 
-    url   = host + "/_xtdb/entity"
+    url   =  f"{host}/_xtdb/entity"
+
     resp = requests.get(url,
                         headers={"content-type": "application/json",
                                  "accept": "application/json"},
@@ -106,12 +123,14 @@ def entity(host:str=None,
     except NotImplementedError:
         return resp.content
 
-
-def query(query, host=None):
+@tz.curry
+def query(host=None, query=None):
+    if not query:
+        return None
     if not host:
         host = DEFAULT_HOST
 
-    url   = host + "/_xtdb/query"
+    url   = f"{host}/_xtdb/query"
     resp = requests.post(url,
                          headers={"accept": "application/json",
                                   "content-type": "application/edn"},
@@ -121,15 +140,13 @@ def query(query, host=None):
     return resp.json()
 
 
-def queryf(f, host=None):
+@tz.curry
+def queryf(host=None, _file=None):
+    if not _file:
+        return None
     if not host:
         host = DEFAULT_HOST
 
+    return query(host, slurp(_file))
 
-    return query(slurp(f), host)
-
-
-def NotImplemented(*args):
-    msg = "Not implemented."
-    raise NotImplementedError(msg)
 

@@ -3,19 +3,6 @@ import os
 import requests
 import toolz as tz
 
-# TODO leave this open (environ?) for other headers, such as auth
-HEADERS={"accept": "application/json",
-         "content-type": "application/json"}
-
-DEFAULT_HOST = tz.get('XTDB_HTTP_HOST',
-                      os.environ,
-                      "http://localhost:3001")
-
-def slurp(f):
-    with open(f, mode="r") as fh:
-        r = fh.read()
-    return r
-
 
 def select_keys(keys, d, factory=dict):
     rv = factory()

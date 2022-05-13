@@ -3,6 +3,7 @@ from toolz import first
 from py_xtdb.xt import attribute_stats, status, submit_tx, query, queryf, entity
 from faker import Faker
 import rootpath, os
+import random
 
 def test_version():
     assert __version__ == '0.1.0'
@@ -17,8 +18,6 @@ def test_status():
     assert isinstance(status(host="http://localhost:4001"), dict)
 
 
-import random
-
 def fake_rec():
     fake = Faker()
     return {"name"    : fake.name()    ,
@@ -31,9 +30,10 @@ def fake_rec():
             "observation-date2": fake.date_time_between(start_date='now', end_date='+3yr').isoformat()
             }
 
+
 def test_query():
     # TODO
-    r = query("""
+    r = query(query="""
     {:query {:find [?id ?name ?address]
          :keys [id name address]
          :where [[?id :xt/id]
@@ -47,7 +47,7 @@ def test_query():
 
 def test_queryf():
     query_file = os.path.join(rootpath.detect(), ".data/query.edn")
-    r = queryf(query_file)
+    r = queryf(_file=query_file)
 
     assert isinstance(r, list)
     assert isinstance(first(r), dict)
