@@ -1,7 +1,10 @@
 [tool.poetry]
 name = "py-xtdb"
 version = "0.4.1"
-description = "Small functions for interacting with XTDB via http."
+description = "Small functions for interacting with XTDB via requests http."
+homepage = https://github.com/joefromct/py-xtdb
+keywords = ['xtdb']
+license = "mit"
 authors = ["joefromct <joefromct@fastmail.com>"]
 
 [tool.poetry.dependencies]
