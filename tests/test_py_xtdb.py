@@ -52,9 +52,9 @@ def test_query():
 
 def test_submit_tx_json():
     # before = attribute_stats()
-    recs = [fake_rec() for _ in range(200)]
+    docs = [fake_rec() for _ in range(200)]
 
-    r = submit_tx(recs=recs)
+    r = submit_tx(docs=docs)
 
     # after = attribute_stats()
     # assert before['xt/id'] < after['xt/id'], \
@@ -67,9 +67,9 @@ def test_submit_tx_valid_times():
 
     fn_pluck_valid_time     = lambda x: x['observation-date']
 
-    recs = [fake_rec() for _ in range(20)]
+    docs = [fake_rec() for _ in range(20)]
 
-    r = submit_tx(recs=recs, fn_pluck_valid_time=fn_pluck_valid_time)
+    r = submit_tx(docs=docs, fn_pluck_valid_time=fn_pluck_valid_time)
 
 
 def test_entity():

@@ -86,7 +86,7 @@ query_edn = request_builder("/_xtdb/query",
 @tz.curry
 def submit_tx(host=None,
               transtype="put",
-              recs=None,
+              docs=None,
               fn_pluck_valid_time:Callable=None,
               fn_pluck_end_valid_time:Callable=None,
               headers={}):
@@ -104,13 +104,13 @@ def submit_tx(host=None,
 
     For instance, `fn_pluck_valid_time` might be something like:
 
-    `lambda rec: rec['my-business-valid-time']
+    `lambda doc: doc['my-business-valid-time']
 
     And this would will get executed and applied to each (put) transaction.
 
     TODO test with write operations.
     """
-    if not recs:
+    if not docs:
             return None
     if not host:
         host = tz.get('XTDB_HTTP_HOST',
@@ -119,18 +119,18 @@ def submit_tx(host=None,
 
     url   = f"{host}/_xtdb/submit-tx"
 
-    def make_trans(rec):
+    def make_trans(doc):
         return \
-            match([rec, fn_pluck_valid_time, fn_pluck_end_valid_time],
-                  [_  , None               , None     ], lambda rec: [transtype, rec],
-                  [_  , callable           , None     ], lambda rec, _:     [transtype, rec, fn_pluck_valid_time(rec) ],
-                  [_  , callable           , callable ], lambda rec, _, __: [transtype, rec, fn_pluck_valid_time(rec), fn_pluck_end_valid_time(rec)])
+            match([doc, fn_pluck_valid_time, fn_pluck_end_valid_time],
+                  [_  , None               , None     ], lambda doc: [transtype, doc],
+                  [_  , callable           , None     ], lambda doc, _:     [transtype, doc, fn_pluck_valid_time(doc) ],
+                  [_  , callable           , callable ], lambda doc, _, __: [transtype, doc, fn_pluck_valid_time(doc), fn_pluck_end_valid_time(doc)])
 
     r = requests.post(url,
                       headers=tz.merge({"accept": "application/json",
                                         "Content-Type": "application/json"},
                                        headers),
-                      data=json.dumps({"tx-ops": [make_trans(r) for r in recs]}))
+                      data=json.dumps({"tx-ops": [make_trans(d) for d in docs]}))
 
     assert r.ok, \
         f"Request not ok? {r.reason}\n\n{r.content}"
