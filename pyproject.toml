@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-xtdb"
-version = "0.3.1"
+version = "0.4.1"
 description = "Small functions for interacting with XTDB via http."
 authors = ["joefromct <joefromct@fastmail.com>"]
 
@@ -13,10 +13,10 @@ edn-format = "^0.7.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"
-rootpath = "^0.1.1"
-faker-credit-score = "^0.3.0"
 ipython = "^8.3.0"
+rootpath = "^0.1.1"
 Faker = "^13.6.0"
+faker-credit-score = "^0.3.0"
 tabulate = "^0.8.9"
 hierarchy-utils = "^0.1.3"
 
