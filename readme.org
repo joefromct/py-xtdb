@@ -123,7 +123,7 @@ Have a look [[file:nb/demo.ipynb][here]].
 ** Why
 
 I'm looking to make `xtdb` more accessible to a python-first team, primarily
-with a focus on data science and/or data ingestion and record loading.
+with a focus on data science and/or data ingestion and document loading.
 
 Some shops prefer to process data in python, and ideally they would have a
 gentle pathway/introduction to xtdb.  This example has minimal clojure code, and
