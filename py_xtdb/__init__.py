@@ -1,4 +1,4 @@
-__version__ = '0.5.1'
+__version__ = '0.5.2'
 
 import py_xtdb.xt as xt
 
@@ -16,5 +16,3 @@ query_edn           = xt.query_edn
 
 submit_tx           = xt.submit_tx
 
-if __name__ == "__main__":
-    pass

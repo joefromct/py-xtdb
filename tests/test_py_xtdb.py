@@ -12,7 +12,7 @@ XTDB_HTTP_HOST = tz.get('XTDB_HTTP_HOST',
                         "http://localhost:3001")
 
 def test_version():
-    assert __version__ == '0.5.1'
+    assert __version__ == '0.5.2'
 
 
 def test_attribute_stats():

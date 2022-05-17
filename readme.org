@@ -120,6 +120,31 @@ From here you can step through the jupyter cells as per usual.
 Have a look [[file:nb/demo.ipynb][here]].
 
 
+** CLI Usage
+
+Constructing queries in python strings can be cumbersome.
+
+If you run the xt.py script directly you can pass in a query file and yield results:
+
+[[file:docs/cli1.png][docs/cli1.png]]
+
+If you're query file has `keys` (returning hashmaps/dicts) it should dump a
+tabular format using tabulate:
+
+
+[[file:docs/cli2.png][docs/cli2.png]]
+
+If you have tools like [[https://github.com/clibs/entr][entr]] available something like below could watch
+=data/query.edn= and run the query on each file save.  This can sort of feel
+like a query tool in the relational world.
+(Clojure likely has better options to interactively visualize data...)
+
+
+[[file:docs/entr.gif][docs/entr.gif]]
+
+
+
+
 ** Why
 
 I'm looking to make `xtdb` more accessible to a python-first team, primarily

@@ -80,7 +80,6 @@ query_edn = request_builder("/_xtdb/query",
                             HEADERS={"accept": "application/json",
                                      "content-type": "application/edn"})
 
-
 @tz.curry
 def submit_tx(host=None,
               transtype="put",
@@ -135,3 +134,25 @@ def submit_tx(host=None,
     return r.json()
 
 
+if __name__ == "__main__":
+    import argparse
+    from pprint import pprint as pp
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("query_file")
+
+    args   = parser.parse_args()
+    with open(args.query_file, mode="r") as fh:
+        query = fh.read()
+
+    results = query_edn(data=query)
+
+    if results:
+        if isinstance(results[0], dict):
+            try:
+                from tabulate import tabulate
+                print(tabulate(results, headers="keys"))
+            except ModuleNotFoundError:
+                pp(results)
+        else:
+            pp(results)
