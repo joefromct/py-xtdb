@@ -2,7 +2,7 @@
 
 Small functions (and examples) for interacting with XTDB via requests http.
 
-https://xtdb.com/docs/
+Sample notebook [[file:nb/demo.ipynb][here]], and great xt docs to memorize at https://xtdb.com/docs/.
 
 ** Install:
 
