@@ -1,0 +1,8 @@
+{:query {:find [?id ?name ?address ?observation-date]
+         :keys [id name address observation-date]
+         :where [[?id :xt/id]
+                 [?id :name ?name]
+                 [?id :address ?address]
+                 [?id :observation-date ?observation-date]
+                 ]
+         :limit 2}}
