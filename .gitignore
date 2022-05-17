@@ -1,3 +1,4 @@
+/data/xtdb-dev
 node_modules
 out
 .shadow-cljs
@@ -16,7 +17,6 @@ report.html
 /.cache/
 /.clj-kondo/
 /.config.edn
-/.data/
 /.clerk/
 /.rebel_readline_history
 /.rebl/
