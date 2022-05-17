@@ -21,7 +21,6 @@ def test_attribute_stats():
 
 def test_status():
     assert isinstance(status() , dict)
-    assert isinstance(status(host="http://localhost:4001"), dict)
 
 
 def fake_rec():

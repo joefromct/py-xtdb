@@ -1,17 +1,128 @@
+* py xtdb
+
+Small functions (and examples) for interacting with XTDB via requests http.
+
+** Install:
+
+#+begin_src shell
+pip istall py_xtdb
+#+end_src
+
+or
+
+#+begin_src sh
+poetry add py_xtdb
+#+end_src
 
 
-** summary
+** Sample Usage:
 
-Some examples of utilizing =xtdb= via python, with (maybe) aspirations to create a http module/wrapper.
+#+begin_src sh
+q_results = query_edn(host="http://localhost:3001",
+                      data="""
+{:query {:find [?id ?name ?address]
+         :keys [id name address]
+         :where [[?id :xt/id]
+                 [?id :name ?name]
+                 [?id :address ?address]]
+         :limit 2}}
 
-** History
+    """)
 
-I'm looking to make `xtdb` more accessible to a python-first team, primarily with a focus on data science and/or data ingestion and record loading.
+print(q_results)
+
+[{'address': '4681 Billy Parkway Suite 747\nNorth James, AR 25849',
+  'id': 1,
+  'name': 'Mr. David Mills'},
+ {'address': '48596 Robert Walks\nWest Angelview, CO 76011',
+  'id': 2,
+  'name': 'Christopher Gregory'}]
+
+#+end_src
+
+If you're looking to get query results into pandas fn `DataFrame` reads this
+sort of thing:
+
+#+BEGIN_SRC python
+import pandas
+
+print(pandas.DataFrame(q_results))
+   id                 name                                            address
+0   1      Mr. David Mills  4681 Billy Parkway Suite 747\nNorth James, AR ...
+1   2  Christopher Gregory       48596 Robert Walks\nWest Angelview, CO 76011
+
+#+END_SRC
+
+
+** Try it out
+
+If you'd like to try out xt and python you can clone this repo, install the
+deps, start a local xt server, and walk through the jupyter notebooks in =/nb/=.
+
+Here's instructions/guidelines in more detail:
+
+First, clone this repo locally and change to said directory:
+
+#+begin_src sh
+
+git clone https://github.com/joefromct/py-xtdb
+cd py-xtdb
+#+end_src
+
+Now we need to start xtdb in a terminal so the jupyter notebook has something to
+talk to.
+
+The following command runs utilizing the `deps.edn` file which pulls in xt jars
+and runs with 2gb of memory.
+
+#+begin_src sh
+# from same directory cloned above
+clojure -X:xt
+#+end_src
+
+You'll see some metrics flash to the screen occasionally saying what XT is up
+to.  This is all setup with the file =xtdb.edn=.  You can see here that =xtdb.edn=
+specifies =data= as the directory to store our database, and lucene full-text-search
+module(s).
+
+So in summary, =deps.edn= pulls the dependencies you need, and =xtdb.edn=
+configures xt.
+
+----
+
+Next lets get a jupyterlab environment running.
+
+Open another terminal to this same directory.
+
+Here, install python dependencies:
+
+#+begin_src shell
+pip install -f requirements.txt
+
+#+end_src
+
+or use poetry (picks up the pyproject.toml... all same dir.)
+
+#+begin_src shell
+poetry install
+#+end_src
+
+Now we should hopefully have jupyterlab on our path. Start it up like so:
+
+#+begin_src sh
+jupyter-lab nb/demo.ipynb
+#+end_src
+
+From here you can step through the jupyter cells as per usual.
+
+Have a look [[file:nb/demo.ipynb][here]].
+
 
 ** Why
 
-Some shops prefer to process data in python, and ideally they would have a gentle pathway/introduction to xtdb.  This example has minimal clojure code, and all dependencies are driven just by =deps.edn= and =xtdb.edn=.
+I'm looking to make `xtdb` more accessible to a python-first team, primarily
+with a focus on data science and/or data ingestion and record loading.
 
-** Faker
-I pulled in the python faker library, just in case the user/explorer is
-interested in playing with sample/fake data and injestion.
+Some shops prefer to process data in python, and ideally they would have a
+gentle pathway/introduction to xtdb.  This example has minimal clojure code, and
+all dependencies are driven just by =deps.edn= and =xtdb.edn=.

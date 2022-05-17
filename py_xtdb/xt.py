@@ -55,7 +55,7 @@ def request_builder(route,
                              data=data,
                              params=params)
 
-        assert r.ok, f"Request not ok? {r.reason}"
+        assert r.ok, f"Request not ok? {r.reason}\n\n{r.content}"
 
         if _headers['accept'] == "application/json":
             return r.json()
@@ -133,7 +133,7 @@ def submit_tx(host=None,
                       data=json.dumps({"tx-ops": [make_trans(r) for r in recs]}))
 
     assert r.ok, \
-        f"Request not ok? \n\n{r.reason}\n\n{r.content}\n"
+        f"Request not ok? {r.reason}\n\n{r.content}"
     return r.json()
 
 

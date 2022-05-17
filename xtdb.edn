@@ -1,5 +1,5 @@
 {
- :xtdb.http-server/server {:port 4001}
+ :xtdb.http-server/server {:port 3001}
  ;; NOTE Comment these to have an in-memory system:
  :xtdb/index-store         {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir "data/xtdb-dev/index-store"}}
  :xtdb/tx-log              {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir "data/xtdb-dev/tx-log"}}
