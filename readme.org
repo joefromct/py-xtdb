@@ -7,13 +7,13 @@ https://xtdb.com/docs/
 ** Install:
 
 #+begin_src shell
-pip istall py_xtdb
+pip istall py-xtdb
 #+end_src
 
 or
 
 #+begin_src sh
-poetry add py_xtdb
+poetry add py-xtdb
 #+end_src
 
 
