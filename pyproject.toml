@@ -4,6 +4,7 @@ version = "0.4.1"
 description = "Small functions for interacting with XTDB via requests http."
 homepage = "https://github.com/joefromct/py-xtdb"
 keywords = ['xtdb']
+readme = "readme.md"
 license = "mit"
 authors = ["joefromct <joefromct@fastmail.com>"]
 

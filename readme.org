@@ -2,6 +2,8 @@
 
 Small functions (and examples) for interacting with XTDB via requests http.
 
+https://xtdb.com/docs/
+
 ** Install:
 
 #+begin_src shell
