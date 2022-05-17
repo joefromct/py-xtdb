@@ -1,5 +1,3 @@
-#!/usr/bin/env ipython
-__version__ = '0.1.0'
 import edn_format
 from pampy import match, _
 import json
