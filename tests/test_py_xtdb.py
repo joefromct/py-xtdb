@@ -1,9 +1,15 @@
 from py_xtdb import __version__
 from toolz import first
-from py_xtdb.xt import attribute_stats, status, submit_tx, query, queryf, entity
+import json
+from py_xtdb.xt import attribute_stats, status, submit_tx, query_edn, entity_json
 from faker import Faker
 import rootpath, os
 import random
+import toolz as tz
+
+XTDB_HTTP_HOST = tz.get('XTDB_HTTP_HOST',
+                        os.environ,
+                        "http://localhost:3001")
 
 def test_version():
     assert __version__ == '0.1.0'
@@ -33,7 +39,7 @@ def fake_rec():
 
 def test_query():
     # TODO
-    r = query(query="""
+    r = query_edn(data="""
     {:query {:find [?id ?name ?address]
          :keys [id name address]
          :where [[?id :xt/id]
@@ -41,14 +47,6 @@ def test_query():
                  [?id :address ?address]]
          :limit 2}}
     """)
-    assert isinstance(r, list)
-    assert isinstance(first(r), dict)
-
-
-def test_queryf():
-    query_file = os.path.join(rootpath.detect(), ".data/query.edn")
-    r = queryf(_file=query_file)
-
     assert isinstance(r, list)
     assert isinstance(first(r), dict)
 
@@ -68,22 +66,15 @@ def test_submit_tx_json():
 
 def test_submit_tx_valid_times():
 
-    fn_pluck_valid_time=lambda x: x['observation-date']
-    fn_pluck_end_valid_time=lambda x: x['observation-date2']
+    fn_pluck_valid_time     = lambda x: x['observation-date']
 
     recs = [fake_rec() for _ in range(20)]
 
     r = submit_tx(recs=recs, fn_pluck_valid_time=fn_pluck_valid_time)
 
 
-def test_submit_tx_end_valid_times():
-    recs = [{"xt/id": 1,
-              "age":  10},
-            ]
-
-    r = submit_tx(recs=recs)
-
-
-def test_entity_history():
-    r = entity(params={"eid-json":"1",  "with-docs": "true", "history": "true", "sort-order": "desc"},host="http://localhost:4001")
+def test_entity():
+    r = entity_json(params={"eid-json":"1",  "with-docs": "true", "history": "true", "sort-order": "desc"})
     assert isinstance(r, list)
+
+
